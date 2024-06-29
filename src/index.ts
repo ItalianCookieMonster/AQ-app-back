@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import cors from "cors";
 
 import { getLatLongFromCity } from "./services/getLatLongFromCity";
 import { getAirConditionsFromLatLong } from "./services/getAirConditionsFromLatLong";
@@ -10,6 +11,7 @@ const app = express();
 dotenv.config();
 const port = 4083;
 
+app.use(cors());
 app.use(bodyParser.json());
 
 export interface UserParams {
