@@ -22,6 +22,7 @@ export const systemPrompts = {
   - Base the information on the provided inputs, but enrich it with additional relenvat details based on your knowledge.
   - Return only a JSON object with the requested info.
   - The quality of people's life are at play here, this is very important for, ensure that the information is powerful, interesting, yet relevant.
+  - Do not mention 'PM2.5' in the output, refer to it as Air Quality Index.
   - Before returning, ensure that the output is in a valid JSON format.
   `,
   whatToDoRn: `
@@ -44,6 +45,7 @@ export const systemPrompts = {
   - Base the information on the provided inputs, but enrich it with additional relenvat details based on your knowledge.
   - Return only a JSON object with the requested info.
   - The quality of people's life are at play here, this is very important for, ensure that the information is powerful, interesting, yet relevant.
+  - Do not mention 'PM2.5' in the output, refer to it as Air Quality Index.
   - Before returning, ensure that the output is in a valid JSON format.
   `,
   currentAirSituation: `
@@ -63,6 +65,7 @@ export const systemPrompts = {
   - Base the information on the provided inputs, but enrich it with additional relenvat details based on your knowledge.
   - Return only a JSON object with the requested info.
   - The quality of people's life are at play here, this is very important for, ensure that the information is powerful, interesting, yet relevant.
+  - Do not mention 'PM2.5' in the output, refer to it as Air Quality Index.
   - Before returning, ensure that the output is in a valid JSON format.
   `,
 };
