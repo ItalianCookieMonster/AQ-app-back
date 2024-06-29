@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import { getLatLongFromCity } from "./services/getLatLongFromCity";
 import { getAirConditionsFromLatLong } from "./services/getAirConditionsFromLatLong";
+import { questionsHandler } from "./services/questionsHandler";
 
 const app = express();
 dotenv.config();
@@ -11,7 +12,7 @@ const port = 4083;
 
 app.use(bodyParser.json());
 
-interface UserParams {
+export interface UserParams {
   age: number;
   isActive: string;
   hasAsma: boolean;
@@ -22,7 +23,10 @@ interface UserParams {
 // - What can i do to make the air situation better for me right now - ask what the user is doing right now
 // - Tell me the current air condition
 
-type AcceptableQuestions = "goForARun" | "whatToDoRn" | "currentAirSituation"; //whatToDoRn - ask what is the user doing
+export type AcceptableQuestions =
+  | "goForARun"
+  | "whatToDoRn"
+  | "currentAirSituation"; //whatToDoRn - ask what is the user doing
 
 app.post("/get-air-recommendations", async (req: Request, res: Response) => {
   try {
@@ -54,6 +58,12 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
     // console.log("!!! AIRCONDITIONS OUTPUT", airConditionsData);
 
     const hardCodedPM2_5 = 6.46;
+
+    const questionOutput = await questionsHandler({
+      question,
+      userParams,
+      airQualityLevel: hardCodedPM2_5,
+    });
 
     return res.json({
       city,

@@ -1,0 +1,42 @@
+{
+  "PM2.5 Level (µg/m³)": [
+    "0 - 12",
+    "13 - 35.4",
+    "35.5 - 55.4",
+    "55.5 - 150.4",
+    "150.5 - 250.4",
+    "250.5 - 500"
+  ],
+  "Health Impact": [
+    "Good",
+    "Moderate",
+    "Unhealthy for Sensitive Groups",
+    "Unhealthy",
+    "Very Unhealthy",
+    "Hazardous"
+  ],
+  "Children": [
+    "Minimal impact, no adverse effects.",
+    "May experience minor respiratory symptoms in sensitive individuals.",
+    "Increased likelihood of respiratory symptoms, reduced lung function.",
+    "Significant increase in respiratory symptoms, potential lung development issues.",
+    "Increased respiratory problems, potential long-term lung damage.",
+    "Severe health effects, emergency conditions, potential long-term damage."
+  ],
+  "Adults": [
+    "Minimal impact, no adverse effects.",
+    "Minor respiratory symptoms possible in sensitive individuals.",
+    "Individuals with respiratory conditions (e.g., asthma) may experience symptoms.",
+    "People with respiratory or heart conditions may experience serious health effects.",
+    "Significant health effects for people with heart or lung conditions.",
+    "Serious health impacts, emergency health conditions, increased mortality."
+  ],
+  "Elderly": [
+    "Minimal impact, no adverse effects.",
+    "Slight increase in respiratory symptoms for those with preexisting conditions.",
+    "Higher risk of respiratory and cardiovascular symptoms.",
+    "Higher risk of heart attacks, strokes, and severe respiratory problems.",
+    "Severe respiratory and cardiovascular effects, potential hospitalization.",
+    "Life-threatening respiratory and cardiovascular effects, high risk of mortality."
+  ]
+}
