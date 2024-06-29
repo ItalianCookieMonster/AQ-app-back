@@ -1,7 +1,13 @@
-export const getLatLongFromCity = (
+import axios from "axios";
+
+export const getLatLongFromCity = async (
   city: string
-): { lat: number; long: number } => {
-  //process.env.API_KEY
-  // Mock data, replace with actual API call
-  return { lat: 40.7128, long: -74.006 }; // Coordinates for New York City
+): Promise<{ lat: string; long: string }> => {
+  const apiKey = process.env.OPENWEATHERMAP_API_KEY;
+
+  const response = await axios.get(
+    `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`
+  );
+  const { lat, lon } = response.data[0];
+  return { lat, long: lon };
 };
