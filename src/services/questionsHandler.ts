@@ -5,9 +5,9 @@ import { returnRawFileData } from "../rawData/getRawDataHandler";
 
 import { getCurrentDayAndTime } from "../utils/getCurrentDayAndTime";
 
-// run - boolean is good
-// air - air quality range
-// what to do - id for the area
+// goForARun - boolean is good (isGood)
+// currentAirSituation - air quality range (currentAirStatus)
+// whatToDoRn - id for the area (areaID)
 
 export const questionsHandler = async ({
   question,
