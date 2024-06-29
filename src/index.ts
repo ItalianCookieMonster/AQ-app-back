@@ -18,6 +18,8 @@ export interface UserParams {
   hasAsma: boolean;
 }
 
+// problema / quien somos / como lo hemos arreglado / stack usado
+
 // - Is it a good time to go for a run
 // - Current air situation for me at the moment
 // - What can i do to make the air situation better for me right now - ask what the user is doing right now

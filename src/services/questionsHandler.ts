@@ -5,6 +5,10 @@ import { returnRawFileData } from "../rawData/getRawDataHandler";
 
 import { getCurrentDayAndTime } from "../utils/getCurrentDayAndTime";
 
+// run - boolean is good
+// air - air quality range
+// what to do - id for the area
+
 export const questionsHandler = async ({
   question,
   userParams,
@@ -15,9 +19,9 @@ export const questionsHandler = async ({
   userParams: UserParams;
   airQualityLevel: number;
   whatIsUserDoingAtTheMoment?: string;
-}): Promise<string | null> => {
+}): Promise<{ [key: string]: string } | null> => {
   if (!question || !userParams) {
-    return "Missing question or user parameters";
+    return { ouptut: "Missing question or user parameters" };
   }
 
   if (question === "goForARun") {
@@ -36,9 +40,7 @@ export const questionsHandler = async ({
       responseFormat: "json",
     });
 
-    const { output } = response || {};
-
-    return output;
+    return response;
   } else if (question === "whatToDoRn") {
     const jsonDataWhatToDo = await returnRawFileData("jsonDataWhatToDo");
 
@@ -53,8 +55,7 @@ export const questionsHandler = async ({
       responseFormat: "json",
     });
 
-    const { output } = response || {};
-    return output;
+    return response;
   } else if (question === "currentAirSituation") {
     const jsonDataAirSituation = await returnRawFileData(
       "jsonDataAirSituation"
@@ -70,9 +71,7 @@ export const questionsHandler = async ({
       responseFormat: "json",
     });
 
-    const { currentAirSituation } = response || {};
-
-    return currentAirSituation;
+    return response;
   }
 
   return null;
