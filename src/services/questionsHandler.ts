@@ -1,34 +1,9 @@
 import { AcceptableQuestions, UserParams } from "..";
 import { callGroqLLama3OpenAI } from "../llms/callGroqLlama3";
 import { systemPrompts } from "../llms/prompts";
+import { returnRawFileData } from "../rawData/getRawDataHandler";
 
-import fs from "fs";
-import path from "path";
 import { getCurrentDayAndTime } from "../utils/getCurrentDayAndTime";
-
-// Read the JSON file synchronously and parse it
-const dataFilePathAirSituation = path.join(
-  __dirname,
-  "../rawData/currentAirSituationRange.json"
-);
-const dataFilePathHealthImpact = path.join(
-  __dirname,
-  "../rawData/healthImpactData.json"
-);
-const dataFilePathWhatToDoExamples = path.join(
-  __dirname,
-  "../rawData/whatToDoToImproveAirQuality.json"
-);
-
-const jsonDataAirSituation = JSON.parse(
-  fs.readFileSync(dataFilePathAirSituation, "utf-8")
-);
-const jsonDataHealth = JSON.parse(
-  fs.readFileSync(dataFilePathHealthImpact, "utf-8")
-);
-const jsonDataWhatToDo = JSON.parse(
-  fs.readFileSync(dataFilePathWhatToDoExamples, "utf-8")
-);
 
 export const questionsHandler = async ({
   question,
@@ -48,6 +23,8 @@ export const questionsHandler = async ({
   if (question === "goForARun") {
     const { day, hour } = getCurrentDayAndTime();
 
+    const jsonDataHealth = await returnRawFileData("jsonDataHealth");
+
     const response = await callGroqLLama3OpenAI({
       systemPrompt: systemPrompts[question],
       prompt: `
@@ -63,6 +40,8 @@ export const questionsHandler = async ({
 
     return output;
   } else if (question === "whatToDoRn") {
+    const jsonDataWhatToDo = await returnRawFileData("jsonDataWhatToDo");
+
     const response = await callGroqLLama3OpenAI({
       systemPrompt: systemPrompts[question],
       prompt: `
@@ -77,6 +56,10 @@ export const questionsHandler = async ({
     const { output } = response || {};
     return output;
   } else if (question === "currentAirSituation") {
+    const jsonDataAirSituation = await returnRawFileData(
+      "jsonDataAirSituation"
+    );
+
     const response = await callGroqLLama3OpenAI({
       systemPrompt: systemPrompts[question],
       prompt: `
