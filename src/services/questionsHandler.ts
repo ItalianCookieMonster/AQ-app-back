@@ -15,6 +15,10 @@ const dataFilePathHealthImpact = path.join(
   __dirname,
   "../rawData/healthImpactData.json"
 );
+const dataFilePathWhatToDoExamples = path.join(
+  __dirname,
+  "../rawData/whatToDoToImproveAirQuality.json"
+);
 
 const jsonDataAirSituation = JSON.parse(
   fs.readFileSync(dataFilePathAirSituation, "utf-8")
@@ -22,11 +26,15 @@ const jsonDataAirSituation = JSON.parse(
 const jsonDataHealth = JSON.parse(
   fs.readFileSync(dataFilePathHealthImpact, "utf-8")
 );
+const jsonDataWhatToDo = JSON.parse(
+  fs.readFileSync(dataFilePathWhatToDoExamples, "utf-8")
+);
 
 export const questionsHandler = async ({
   question,
   userParams,
   airQualityLevel,
+  whatIsUserDoingAtTheMoment,
 }: {
   question: AcceptableQuestions;
   userParams: UserParams;
@@ -50,13 +58,24 @@ export const questionsHandler = async ({
   `,
       responseFormat: "json",
     });
-    console.log("!!!!!!! ~ response call groq lama goforarun:", response);
 
     const { output } = response || {};
 
     return output;
   } else if (question === "whatToDoRn") {
-    return "whatToDoRn" + userParams;
+    const response = await callGroqLLama3OpenAI({
+      systemPrompt: systemPrompts[question],
+      prompt: `
+        <examples_data>: ${JSON.stringify(jsonDataWhatToDo)}
+        <age>: ${userParams.age}
+        <user_is_doing>: ${whatIsUserDoingAtTheMoment}
+        <pm2_5_level>: ${airQualityLevel}
+  `,
+      responseFormat: "json",
+    });
+
+    const { output } = response || {};
+    return output;
   } else if (question === "currentAirSituation") {
     const response = await callGroqLLama3OpenAI({
       systemPrompt: systemPrompts[question],
@@ -67,10 +86,6 @@ export const questionsHandler = async ({
   `,
       responseFormat: "json",
     });
-    console.log(
-      "!!!!!!! ~ response call groq lama currentairsituation:",
-      response
-    );
 
     const { currentAirSituation } = response || {};
 

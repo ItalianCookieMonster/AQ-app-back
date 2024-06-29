@@ -34,6 +34,7 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
       city,
       userParams,
       question,
+      whatIsUserDoingAtTheMoment,
     }: {
       city: string;
       userParams: UserParams;
@@ -67,6 +68,7 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
       question,
       userParams,
       airQualityLevel: hardCodedPM2_5,
+      whatIsUserDoingAtTheMoment,
     });
 
     return res.json({

@@ -1,0 +1,32 @@
+{
+  "Transportation": [
+    "Use public transportation",
+    "Carpool or ride-share",
+    "Walk or cycle instead of driving",
+    "Switch to electric or hybrid vehicles",
+    "Maintain your vehicle and keep tires properly inflated"
+  ],
+  "Energy Conservation": [
+    "Turn off lights and electronics when not in use",
+    "Use energy-efficient appliances",
+    "Install programmable thermostats",
+    "Opt for renewable energy sources like solar or wind"
+  ],
+  "Household Practices": [
+    "Recycle and reuse materials",
+    "Avoid burning trash or yard waste",
+    "Use eco-friendly cleaning products",
+    "Install low-flow showerheads and faucets",
+    "Use fans instead of air conditioning when possible"
+  ],
+  "Gardening and Green Spaces": [
+    "Plant and care for trees",
+    "Create urban gardens or green roofs"
+  ],
+  "Community and Advocacy": [
+    "Support local clean air initiatives",
+    "Participate in community clean-up events",
+    "Advocate for stricter air quality regulations",
+    "Educate others about the importance of clean air"
+  ]
+}
