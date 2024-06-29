@@ -17,7 +17,12 @@ interface UserParams {
   hasAsma: boolean;
 }
 
-type AcceptableQuestions = "goForARun" | "whatToDoRn" | "currentAirSituation";
+// - Is it a good time to go for a run
+// - Current air situation for me at the moment
+// - What can i do to make the air situation better for me right now - ask what the user is doing right now
+// - Tell me the current air condition
+
+type AcceptableQuestions = "goForARun" | "whatToDoRn" | "currentAirSituation"; //whatToDoRn - ask what is the user doing
 
 app.post("/get-air-recommendations", async (req: Request, res: Response) => {
   try {
@@ -32,27 +37,27 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
       return res.status(400).send("Missing city or user parameters");
     }
 
-    const { lat, long } = await getLatLongFromCity(city);
-    console.log("!!! LATLONGOUTPUT ", { lat, long });
+    // const { lat, long } = await getLatLongFromCity(city);
+    // console.log("!!! LATLONGOUTPUT ", { lat, long });
 
-    if (!lat || !long) {
-      return res.status(400).send("Missing latitude or longitude");
-    }
+    // if (!lat || !long) {
+    //   return res.status(400).send("Missing latitude or longitude");
+    // }
 
-    const airConditionsResponse = await getAirConditionsFromLatLong(lat, long);
-    const airConditionsData = JSON.stringify(airConditionsResponse);
+    // const airConditionsResponse = await getAirConditionsFromLatLong(lat, long);
+    // const airConditionsData = JSON.stringify(airConditionsResponse);
 
-    const pm2_5 = airConditionsResponse
-      ? airConditionsResponse.pm2_5
-      : "unknown";
+    // const pm2_5 = airConditionsResponse
+    //   ? airConditionsResponse.pm2_5
+    //   : "unknown";
 
-    console.log("!!! AIRCONDITIONS OUTPUT", airConditionsData);
+    // console.log("!!! AIRCONDITIONS OUTPUT", airConditionsData);
+
+    const hardCodedPM2_5 = 6.46;
 
     return res.json({
       city,
-      lat,
-      long,
-      // airConditions,
+      pm2_5: hardCodedPM2_5,
       userParams,
     });
   } catch (error) {
