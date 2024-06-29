@@ -34,8 +34,12 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
       city,
       userParams,
       question,
-    }: { city: string; userParams: UserParams; question: AcceptableQuestions } =
-      req.body;
+    }: {
+      city: string;
+      userParams: UserParams;
+      question: AcceptableQuestions;
+      whatIsUserDoingAtTheMoment?: string;
+    } = req.body;
 
     if (!city || !userParams) {
       return res.status(400).send("Missing city or user parameters");
@@ -69,6 +73,8 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
       city,
       pm2_5: hardCodedPM2_5,
       userParams,
+      question,
+      questionOutput,
     });
   } catch (error) {
     console.log("!!!!!!! ~ app.post ~ error:", error);

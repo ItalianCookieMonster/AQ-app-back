@@ -4,13 +4,15 @@ import { OpenAI } from "openai";
 export type LLMType = {
   systemPrompt: string;
   prompt: string;
+  responseFormat?: "text" | "json";
 };
 
 // Function to call OpenAI API and return the response text
 export async function callGroqLLama3OpenAI({
   systemPrompt,
   prompt,
-}: LLMType): Promise<string> {
+  responseFormat = "text",
+}: LLMType): Promise<null | { [key: string]: string }> {
   const apiKey = process.env.GROQ_API_KEY;
 
   // Set up OpenAI API configuration
@@ -33,9 +35,8 @@ export async function callGroqLLama3OpenAI({
       response_format: { type: "json_object" },
     });
 
-    // Return the response text
-
-    return response?.choices[0]?.message?.content?.trim() || "no_response";
+    const content = response?.choices[0]?.message?.content;
+    return content ? JSON.parse(content) : null;
   } catch (error) {
     console.error("Error calling Groq Llama 3 API:", error);
     throw error; // or handle the error as you see fit
