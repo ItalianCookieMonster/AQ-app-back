@@ -1,5 +1,6 @@
-import { AcceptableQuestions, UserParams } from "..";
+import { AcceptableQuestions, AvailableModels, UserParams } from "..";
 import { callGroqLLama3OpenAI } from "../llms/callGroqLlama3";
+import { callMistralAPI } from "../llms/mistralAI";
 import { systemPrompts } from "../llms/prompts";
 import { returnRawFileData } from "../rawData/getRawDataHandler";
 
@@ -14,22 +15,30 @@ export const questionsHandler = async ({
   userParams,
   airQualityLevel,
   whatIsUserDoingAtTheMoment,
+  model,
 }: {
   question: AcceptableQuestions;
   userParams: UserParams;
   airQualityLevel: number;
   whatIsUserDoingAtTheMoment?: string;
+  model?: AvailableModels;
 }): Promise<{ [key: string]: string } | null> => {
   if (!question || !userParams) {
     return { ouptut: "Missing question or user parameters" };
   }
+
+  const isMistralModel = model === "mistral";
+
+  const currentModelFunction = !isMistralModel
+    ? callGroqLLama3OpenAI
+    : callMistralAPI;
 
   if (question === "goForARun") {
     const { day, hour } = getCurrentDayAndTime();
 
     const jsonDataHealth = await returnRawFileData("jsonDataHealth");
 
-    const response = await callGroqLLama3OpenAI({
+    const response = await currentModelFunction({
       systemPrompt: systemPrompts[question],
       prompt: `
         <health_impact_data>: ${JSON.stringify(jsonDataHealth)}
@@ -44,7 +53,7 @@ export const questionsHandler = async ({
   } else if (question === "whatToDoRn") {
     const jsonDataWhatToDo = await returnRawFileData("jsonDataWhatToDo");
 
-    const response = await callGroqLLama3OpenAI({
+    const response = await currentModelFunction({
       systemPrompt: systemPrompts[question],
       prompt: `
         <examples_data>: ${JSON.stringify(jsonDataWhatToDo)}
@@ -61,7 +70,7 @@ export const questionsHandler = async ({
       "jsonDataAirSituation"
     );
 
-    const response = await callGroqLLama3OpenAI({
+    const response = await currentModelFunction({
       systemPrompt: systemPrompts[question],
       prompt: `
         <data>: ${JSON.stringify(jsonDataAirSituation)}
