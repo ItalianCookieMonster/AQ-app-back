@@ -32,6 +32,8 @@ export type AcceptableQuestions =
   | "whatToDoRn"
   | "currentAirSituation"; //whatToDoRn - ask what is the user doing
 
+export type AvailableModels = "llama" | "mistral";
+
 app.post("/get-air-recommendations", async (req: Request, res: Response) => {
   try {
     const {
@@ -39,11 +41,13 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
       userParams,
       question,
       whatIsUserDoingAtTheMoment,
+      model = "llama",
     }: {
       city: string;
       userParams: UserParams;
       question: AcceptableQuestions;
       whatIsUserDoingAtTheMoment?: string;
+      model?: AvailableModels;
     } = req.body;
 
     if (!city || !userParams) {
@@ -73,6 +77,7 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
       userParams,
       airQualityLevel: hardCodedPM2_5,
       whatIsUserDoingAtTheMoment,
+      model,
     });
 
     return res.json({
