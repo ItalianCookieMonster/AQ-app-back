@@ -87,6 +87,66 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
     return res.status(400).send(`Error: ${error}`);
   }
 });
+app.post(
+  "/get-air-recommendations-externally",
+  async (req: Request, res: Response) => {
+    try {
+      const {
+        city,
+        userParams,
+        question,
+        whatIsUserDoingAtTheMoment,
+        weatherAPIKey,
+      }: {
+        city: string;
+        userParams: UserParams;
+        question: AcceptableQuestions;
+        weatherAPIKey: string;
+        whatIsUserDoingAtTheMoment?: string;
+      } = req.body;
+
+      if (!city || !userParams) {
+        return res.status(400).send("Missing city or user parameters");
+      }
+
+      if (!weatherAPIKey) {
+        return res.status(400).send("Missing weather API key");
+      }
+
+      const { lat, long } = await getLatLongFromCity(city, weatherAPIKey);
+
+      if (!lat || !long) {
+        return res.status(400).send("Missing latitude or longitude");
+      }
+
+      const airConditionsResponse = await getAirConditionsFromLatLong(
+        lat,
+        long,
+        weatherAPIKey
+      );
+
+      const pm2_5 = airConditionsResponse ? airConditionsResponse.pm2_5 : 0.0;
+
+      const questionOutput = await questionsHandler({
+        question,
+        userParams,
+        airQualityLevel: pm2_5,
+        whatIsUserDoingAtTheMoment,
+      });
+
+      return res.json({
+        city,
+        pm2_5: pm2_5,
+        userParams,
+        question,
+        questionOutput,
+      });
+    } catch (error) {
+      console.log("!!!!!!! SERVER ~ app.post ~ error:", error);
+      return res.status(400).send(`Error: ${error}`);
+    }
+  }
+);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
