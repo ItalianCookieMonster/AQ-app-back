@@ -84,8 +84,8 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
     });
 
     return res.json({
-      lat,
-      long,
+      model,
+      loc: { lat, long },
       city,
       pm2_5: currentPM2_5,
       userParams,
