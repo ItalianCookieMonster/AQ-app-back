@@ -54,35 +54,40 @@ app.post("/get-air-recommendations", async (req: Request, res: Response) => {
       return res.status(400).send("Missing city or user parameters");
     }
 
-    // const { lat, long } = await getLatLongFromCity(city);
-    // console.log("!!! LATLONGOUTPUT ", { lat, long });
+    const { lat, long } = await getLatLongFromCity(city);
 
-    // if (!lat || !long) {
-    //   return res.status(400).send("Missing latitude or longitude");
-    // }
+    const latitude = lat || "41.3987283";
 
-    // const airConditionsResponse = await getAirConditionsFromLatLong(lat, long);
-    // const airConditionsData = JSON.stringify(airConditionsResponse);
+    const longitude = long || "2.1608651";
 
-    // const pm2_5 = airConditionsResponse
-    //   ? airConditionsResponse.pm2_5
-    //   : "unknown";
+    if (!latitude || !longitude) {
+      return res.status(400).send("Missing latitude or longitude");
+    }
 
-    // console.log("!!! AIRCONDITIONS OUTPUT", airConditionsData);
+    const airConditionsResponse = await getAirConditionsFromLatLong(
+      latitude,
+      longitude
+    );
 
-    const hardCodedPM2_5 = 6.46;
+    const pm2_5 = airConditionsResponse
+      ? airConditionsResponse.pm2_5
+      : undefined;
+
+    const currentPM2_5 = pm2_5 || 6.46;
 
     const questionOutput = await questionsHandler({
       question,
       userParams,
-      airQualityLevel: hardCodedPM2_5,
+      airQualityLevel: currentPM2_5,
       whatIsUserDoingAtTheMoment,
       model,
     });
 
     return res.json({
+      lat,
+      long,
       city,
-      pm2_5: hardCodedPM2_5,
+      pm2_5: currentPM2_5,
       userParams,
       question,
       questionOutput,
